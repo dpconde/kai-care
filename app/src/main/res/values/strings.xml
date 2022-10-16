@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KaiCare</string>
+    <string name="title_login">Login Module</string>
 </resources>
