@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 android {
-    compileSdk 33
+    compileSdk 32
 
     defaultConfig {
         minSdk 25
@@ -16,9 +16,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
     implementation project(":app")
     implementation project(":core:commons")
+
+    //Play Core (don't know but necessary for DataBinding in DFM)
+    implementation("com.google.android.play:core:1.10.3")
+    implementation("com.google.android.play:core-ktx:1.8.1")
+
 }
