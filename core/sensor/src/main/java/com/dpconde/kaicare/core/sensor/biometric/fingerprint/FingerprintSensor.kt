@@ -1,28 +1,28 @@
 package com.dpconde.kaicare.core.sensor.biometric.fingerprint
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricManager.from
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import com.dpconde.kaicare.core.sensor.SensorStatus
 import com.dpconde.kaicare.core.sensor.biometric.BiometricAuthResult
 import com.dpconde.kaicare.core.sensor.biometric.BiometricSensor
-import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.concurrent.Executor
 import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class FingerprintSensor (
-    private val activity: AppCompatActivity
+    private val activity: FragmentActivity
 ): BiometricSensor {
 
     private var executor: Executor = ContextCompat.getMainExecutor(activity)
     private lateinit var biometricPrompt: BiometricPrompt
 
     override suspend fun authenticate(): BiometricAuthResult =
-        suspendCancellableCoroutine { cont ->
+        suspendCoroutine { cont ->
             val callback = object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
@@ -34,10 +34,6 @@ class FingerprintSensor (
                     cont.resume(BiometricAuthResult.Success)
                 }
 
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    cont.resume(BiometricAuthResult.Failure)
-                }
             }
 
             biometricPrompt = BiometricPrompt(activity, executor, callback)
