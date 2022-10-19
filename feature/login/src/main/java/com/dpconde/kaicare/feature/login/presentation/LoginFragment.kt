@@ -29,7 +29,10 @@ class LoginFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
+        loginViewModel.authWithBiometricSensor()
+
         return binding.root
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

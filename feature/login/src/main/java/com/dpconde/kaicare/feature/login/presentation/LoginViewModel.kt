@@ -13,5 +13,10 @@ class LoginViewModel @Inject constructor(
     private val biometricUseCases: BiometricUseCases
 ) : ViewModel() {
 
+    fun authWithBiometricSensor(){
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = biometricUseCases.authenticateWithBiometric()
+        }
+    }
 
 }
