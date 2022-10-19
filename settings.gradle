@@ -16,3 +16,4 @@ rootProject.name = "KaiCare"
 include ':app'
 include ':feature:login'
 include ':core:commons'
+include ':core:sensor'
