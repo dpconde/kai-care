@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 25
@@ -39,6 +39,8 @@ dependencies {
 
     //Core
     api 'androidx.core:core-ktx:1.8.0'
+    api "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+
 
     //Navigation
     api("androidx.navigation:navigation-fragment-ktx:$nav_version")
