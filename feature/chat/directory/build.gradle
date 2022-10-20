@@ -1,9 +1,10 @@
 plugins {
     id 'com.android.dynamic-feature'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 android {
-    compileSdk 33
+    compileSdk 32
 
     defaultConfig {
         minSdk 25
@@ -16,13 +17,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+//    dataBinding {
+//        enabled = true
+//    }
 }
 
 dependencies {
     implementation project(":app")
     implementation project(":core:commons")
-
 }
