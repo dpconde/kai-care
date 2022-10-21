@@ -3,6 +3,7 @@ package com.dpconde.kaicare.feature.login.di
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.dpconde.kaicare.AppDependencies
+import com.dpconde.kaicare.core.session.di.SessionModule
 import com.dpconde.kaicare.feature.login.presentation.LoginFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -12,6 +13,7 @@ import dagger.Component
     modules = [
         LoginModule::class,
         LoginUIModule::class,
+        SessionModule::class
     ]
 )
 interface LoginUIComponent {

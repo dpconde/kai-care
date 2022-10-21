@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.dpconde.kaicare.feature.login.presentation.LoginViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -62,6 +68,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={viewModel.loginEmail}"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -80,7 +89,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.loginPass}"
+                    android:inputType="textPassword"
+                    android:singleLine="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,6 +102,7 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="40dp"
                 android:text="@string/login"
+                android:onClick="@{()-> viewModel.authWithEmailAndPassword()}"
                 app:layout_constraintTop_toBottomOf="@id/passwordField" />
 
         </LinearLayout>

@@ -1,4 +1,4 @@
-package com.dpconde.kaicare.feature.login.domain.sensor
+package com.dpconde.kaicare.feature.login.domain.authenticator
 
 import com.dpconde.kaicare.core.sensor.SensorStatus
 import com.dpconde.kaicare.core.sensor.biometric.BiometricAuthResult
