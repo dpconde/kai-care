@@ -5,4 +5,8 @@
     <string name="title_home">Home</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_tasks">Tasks</string>
+    <string name="home_menu">Home</string>
+    <string name="chat_menu">Chat</string>
+    <string name="calendar_menu">Calendar</string>
+    <string name="tasks_menu">Tasks</string>
 </resources>
