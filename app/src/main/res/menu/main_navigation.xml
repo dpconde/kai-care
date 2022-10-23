@@ -5,7 +5,7 @@
 
     <item
         android:title="Home"
-        android:id="@+id/homeGraph"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_menu_home"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
@@ -16,12 +16,12 @@
         app:showAsAction="always"/>
 
     <item android:title="Calendar"
-        android:id="@+id/CalendarGraph"
+        android:id="@+id/calendarFragment"
         android:icon="@drawable/ic_menu_calendar"
         app:showAsAction="always"/>
 
     <item android:title="Tasks"
-        android:id="@+id/taskGraph"
+        android:id="@+id/taskFragment"
         android:icon="@drawable/ic_menu_task"
         app:showAsAction="always"/>
 </menu>

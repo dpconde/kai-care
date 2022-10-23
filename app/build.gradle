@@ -31,7 +31,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dynamicFeatures = [':feature:login', ':feature:chat:directory']
+    dynamicFeatures = [':feature:login', ':feature:chat:directory', ':feature:home', ':feature:calendar', ':feature:tasks']
 
     dataBinding {
         enabled = true

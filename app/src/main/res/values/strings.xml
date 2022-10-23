@@ -2,4 +2,7 @@
     <string name="app_name">KaiCare</string>
     <string name="title_login">Login Module</string>
     <string name="title_directory">Chat directory</string>
+    <string name="title_home">Home</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="title_tasks">Tasks</string>
 </resources>

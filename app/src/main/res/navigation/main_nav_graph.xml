@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/auth_nav_graph"
-    app:startDestination="@id/chatGraph">
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/homeFragment">
 
     <include app:graph="@navigation/chat_nav_graph"/>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.dpconde.kaicare.feature.home.HomeFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/taskFragment"
+        android:name="com.dpconde.kaicare.feature.tasks.TasksFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.dpconde.kaicare.feature.calendar.CalendarFragment">
+    </fragment>
 
 </navigation>
