@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dpconde.kaicare.feature.login.databinding.FragmentLoginBinding
 import com.dpconde.kaicare.feature.login.di.inject
+import com.dpconde.kaicare.feature.login.domain.entities.AuthResult
 import com.dpconde.kaicare.presentation.AuthActivity
 import javax.inject.Inject
 
@@ -32,15 +33,15 @@ class LoginFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
-        if(loginViewModel.isSessionAvailable()) loginViewModel.authWithBiometricSensor()
+        loginViewModel.authWithBiometricSensor()
 
         loginViewModel.getUserEmail()
 
         loginViewModel.accessGranted.observe(viewLifecycleOwner){
             it?.let {
                 when(it){
-                    true -> (requireActivity() as AuthActivity).goToMainActivity()
-                    false -> Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show()
+                    is AuthResult.Error -> Toast.makeText(requireContext(), it.errorDesc, Toast.LENGTH_SHORT).show()
+                    is AuthResult.Success -> (requireActivity() as AuthActivity).goToMainActivity()
                 }
             }
         }

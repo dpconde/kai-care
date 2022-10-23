@@ -12,6 +12,7 @@ buildscript {
     dependencies {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+        classpath 'com.google.gms:google-services:4.3.14'
 
         classpath 'com.android.tools.build:gradle:7.0.4'
         //Esta librería junto con la versión de gradle en gradle-wrapper.properties, hace que funcione
@@ -20,6 +21,13 @@ buildscript {
         //a ver si se solucionan los problemas. Hasta entonces, aparecerán warnings al hacer el Build.
     }
 }
+
+//allprojects {
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//}
 
 task clean(type: Delete) {
     delete rootProject.buildDir

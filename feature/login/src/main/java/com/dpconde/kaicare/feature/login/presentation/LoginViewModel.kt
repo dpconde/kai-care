@@ -16,16 +16,17 @@ class LoginViewModel @Inject constructor(
     private val biometricUseCases: BiometricUseCases
 ) : ViewModel() {
 
-    val accessGranted = MutableLiveData<Boolean>()
+    val accessGranted = MutableLiveData<AuthResult>()
     val loginEmail = MutableLiveData<String>()
     val loginPass = MutableLiveData<String>()
 
     fun authWithBiometricSensor(){
+        val loggedUser = authUseCases.getLoggedUser() ?: return
         viewModelScope.launch(Dispatchers.Main) {
             when(biometricUseCases.authenticateWithBiometric()){
                 is BiometricAuthResult.Error -> {}
                 is BiometricAuthResult.Failure -> {}
-                is BiometricAuthResult.Success -> accessGranted.postValue(true)
+                is BiometricAuthResult.Success -> accessGranted.postValue(AuthResult.Success(loggedUser))
             }
         }
     }
@@ -40,19 +41,17 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onSuccessAuthWithEmailAndPassword(result: AuthResult.Success){
-        authUseCases.saveTokenSession(result.token)
+        authUseCases.saveTokenSession(result.user.id) //TODO
         authUseCases.saveEmailSession(loginEmail.value!!)
-        accessGranted.postValue(true)
+        accessGranted.postValue(result)
     }
 
     private fun onFailureAuthWithEmailAndPassword(result: AuthResult.Error){
-        accessGranted.postValue(false)
+        accessGranted.postValue(result)
     }
-
-    fun isSessionAvailable() = authUseCases.isSessionAvailable()
 
     fun getUserEmail() = when(val email = authUseCases.getSessionEmail()){
         null -> loginEmail.postValue("")
-        else -> loginEmail.postValue(email!!)
+        else -> loginEmail.postValue(email)
     }
 }

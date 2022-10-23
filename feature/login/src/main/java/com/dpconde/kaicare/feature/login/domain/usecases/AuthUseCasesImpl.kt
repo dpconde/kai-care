@@ -13,13 +13,12 @@ class AuthUseCasesImpl @Inject constructor(
     override suspend fun doLogin(email: String, password: String) =
         emailPasswordAuthenticator.authenticate(email, password)
 
+    override fun getLoggedUser() = emailPasswordAuthenticator.getLoggedUser()
+
     override fun getSessionEmail() = sessionManager.getSessionEmail()
 
     override fun saveTokenSession(token: String) = sessionManager.saveSessionToken(token)
 
     override fun saveEmailSession(token: String) = sessionManager.saveSessionEmail(token)
-
-    override fun isSessionAvailable() = !sessionManager.getSessionToken().isNullOrBlank()
-
 
 }

@@ -1,6 +1,7 @@
 package com.dpconde.kaicare.feature.login.presentation.usecase
 
 import com.dpconde.kaicare.feature.login.domain.entities.AuthResult
+import com.dpconde.kaicare.feature.login.domain.entities.AuthUser
 
 interface AuthUseCases {
 
@@ -10,9 +11,9 @@ interface AuthUseCases {
     suspend fun doLogin(email: String, password: String): AuthResult
 
     /**
-     * Check if there is a session available
+     * Get current User
      */
-    fun isSessionAvailable(): Boolean
+    fun getLoggedUser(): AuthUser?
 
     /**
      * Get user email
