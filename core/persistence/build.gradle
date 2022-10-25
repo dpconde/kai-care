@@ -1,22 +1,18 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
-    id 'com.google.gms.google-services'
 }
 
 android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.dpconde.kaicare"
         minSdk 25
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -32,19 +28,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dynamicFeatures = [':feature:login', ':feature:chat:directory', ':feature:home', ':feature:calendar', ':feature:tasks']
-
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
-    api project(":core:commons")
-    api project(":core:session")
-    api project(":core:persistence")
+    implementation project(":core:commons")
 
-    //Hilt
-    implementation 'com.google.dagger:hilt-android:2.38.1'
-    kapt 'com.google.dagger:hilt-compiler:2.40.5'
+    //Room
+    annotationProcessor("androidx.room:room-compiler:2.4.3")
+    kapt("androidx.room:room-compiler:2.4.3")
+
+    //Dagger
+    kapt "com.google.dagger:dagger-compiler:2.40.5"
 }
