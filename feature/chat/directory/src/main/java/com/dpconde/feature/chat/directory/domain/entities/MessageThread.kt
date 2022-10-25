@@ -4,9 +4,10 @@ import java.util.*
 
 data class MessageThread(
     val id: String,
-    val type: Int, //group, personal
-    val lastFetch: Date? = null,
-    var unprocessedMessages: List<Message> = listOf(),
-    var processedMessages: List<Message> = listOf(),
-    var unreadMessages: Int = 19
+    val isGroup: Boolean, //group, personal
+    var lastFetch: Date? = null,
+    val members: List<String> = listOf(),
+    var lastMessage: String? = null,
+    var unprocessedMessages: List<Message>? = null,
+    var unreadMessages: Int? = null
 )

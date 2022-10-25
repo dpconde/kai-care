@@ -4,7 +4,7 @@ import com.dpconde.feature.chat.directory.domain.entities.Message
 import com.dpconde.feature.chat.directory.domain.entities.MessageThread
 import java.util.*
 
-interface MessageThreadRepository{
+interface MessageThreadRemoteRepository{
 
     /**
      * Get all user message threads

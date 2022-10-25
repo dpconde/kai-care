@@ -4,9 +4,9 @@ import java.util.*
 
 data class Message(
     val id: String,
-    val createdAt: Date = Date(),
+    val threadId: String,
     val type: MessageType,
     val textMessage: String,
-    val deliveredAt: Date?,
-    val seenAt: Date?
+    val sent: Date,
+    val seen: Date? = null
 )

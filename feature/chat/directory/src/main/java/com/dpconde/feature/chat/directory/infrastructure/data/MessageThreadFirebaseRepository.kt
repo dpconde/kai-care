@@ -1,6 +1,6 @@
 package com.dpconde.feature.chat.directory.infrastructure.data
 
-import com.dpconde.feature.chat.directory.domain.data.MessageThreadRepository
+import com.dpconde.feature.chat.directory.domain.data.MessageThreadRemoteRepository
 import com.dpconde.feature.chat.directory.domain.entities.Message
 import com.dpconde.feature.chat.directory.domain.entities.MessageThread
 import com.dpconde.kaicare.core.commons.service.DataTransformer
@@ -17,10 +17,10 @@ class MessageThreadFirebaseRepository @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val messageThreadTransformer: DataTransformer<DocumentSnapshot, MessageThread>,
     private val messageTransformer: DataTransformer<DocumentSnapshot, Message>,
-): MessageThreadRepository {
+): MessageThreadRemoteRepository {
 
     companion object{
-        const val MESSAGE_THREAD_KEY = "MESSAGE_THREAD"
+        const val MESSAGE_THREAD_KEY = "MESSAGE_THREADS"
         const val MESSAGE_THREAD_MESSAGES_KEY = "MESSAGES"
     }
 

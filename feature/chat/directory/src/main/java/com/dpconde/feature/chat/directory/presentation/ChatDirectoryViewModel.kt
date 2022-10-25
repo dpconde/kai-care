@@ -1,5 +1,6 @@
 package com.dpconde.feature.chat.directory.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dpconde.feature.chat.directory.presentation.usecase.FetchMessageThreadsUseCase
@@ -14,7 +15,17 @@ class ChatDirectoryViewModel @Inject constructor(
 
     fun fetchMessageThreads() {
         viewModelScope.launch(Dispatchers.Main) {
+
+            Log.e("DPC", "fullStart")
             val a = fetchMessageThreadsUseCase.fetchMessageThreads()
+            Log.e("DPC", "fullEnd")
+
+
+//            Log.e("DPC", "localstart")
+//            val b = fetchMessageThreadsUseCase.fetchCurrentMessageThreads()
+//            Log.e("DPC", "localend")
+
+            val f = 0
         }
     }
 
