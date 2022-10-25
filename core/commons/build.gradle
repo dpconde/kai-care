@@ -40,6 +40,8 @@ dependencies {
     //Core
     api 'androidx.core:core-ktx:1.8.0'
     api "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
 
     //Navigation
     api("androidx.navigation:navigation-fragment-ktx:$nav_version")
@@ -64,4 +66,5 @@ dependencies {
     //Firebase
     api platform('com.google.firebase:firebase-bom:26.0.0')
     api 'com.google.firebase:firebase-auth-ktx'
+    api 'com.google.firebase:firebase-firestore-ktx'
 }

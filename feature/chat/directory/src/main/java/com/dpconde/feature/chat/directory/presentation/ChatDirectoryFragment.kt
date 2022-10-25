@@ -31,7 +31,7 @@ class ChatDirectoryFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
-        chatDirectoryViewModel.dummy()
+        chatDirectoryViewModel.fetchMessageThreads()
 
         return binding.root
     }
