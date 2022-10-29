@@ -1,6 +1,6 @@
-package com.dpconde.feature.chat.directory.infrastructure.data
+package com.dpconde.feature.chat.directory.infrastructure.data.local
 
-import com.dpconde.feature.chat.directory.domain.data.MessageThreadLocalRepository
+import com.dpconde.feature.chat.directory.domain.data.local.MessageThreadLocalRepository
 import com.dpconde.feature.chat.directory.domain.entities.MessageThread
 import com.dpconde.kaicare.core.commons.service.DataTransformer
 import com.dpconde.kaicare.core.persistence.room.dao.MessageThreadDao

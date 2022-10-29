@@ -1,4 +1,4 @@
-package com.dpconde.feature.chat.directory.domain.data
+package com.dpconde.feature.chat.directory.domain.data.local
 
 import com.dpconde.feature.chat.directory.domain.entities.Message
 

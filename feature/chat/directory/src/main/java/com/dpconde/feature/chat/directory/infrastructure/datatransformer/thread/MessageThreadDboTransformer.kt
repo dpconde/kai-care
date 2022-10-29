@@ -1,4 +1,4 @@
-package com.dpconde.feature.chat.directory.infrastructure.datatransformer
+package com.dpconde.feature.chat.directory.infrastructure.datatransformer.thread
 
 import com.dpconde.feature.chat.directory.domain.entities.MessageThread
 import com.dpconde.kaicare.core.commons.service.DataTransformer
@@ -12,7 +12,11 @@ class MessageThreadDboTransformer: DataTransformer<MessageThread, MessageThreadD
             from.lastFetch,
             from.unreadMessages ?: 0,
             from.lastMessage,
+            from.lastMessageDate,
             from.isGroup,
-            "Carmen Lopez")
+            from.name,
+            from.role,
+            from.imageUrl
+        )
     }
 }

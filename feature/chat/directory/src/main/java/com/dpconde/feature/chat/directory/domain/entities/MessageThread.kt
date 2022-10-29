@@ -8,6 +8,10 @@ data class MessageThread(
     var lastFetch: Date? = null,
     val members: List<String> = listOf(),
     var lastMessage: String? = null,
+    var lastMessageDate: Date? = null,
     var unprocessedMessages: List<Message>? = null,
-    var unreadMessages: Int? = null
+    var unreadMessages: Int? = null,
+    var name: String,
+    var role: String,
+    var imageUrl: String
 )

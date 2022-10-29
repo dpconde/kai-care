@@ -1,4 +1,4 @@
-package com.dpconde.feature.chat.directory.infrastructure.datatransformer
+package com.dpconde.feature.chat.directory.infrastructure.datatransformer.message
 
 import com.dpconde.feature.chat.directory.domain.entities.Message
 import com.dpconde.kaicare.core.commons.service.DataTransformer

@@ -1,6 +1,6 @@
-package com.dpconde.feature.chat.directory.infrastructure.data
+package com.dpconde.feature.chat.directory.infrastructure.data.remote
 
-import com.dpconde.feature.chat.directory.domain.data.MessageThreadRemoteRepository
+import com.dpconde.feature.chat.directory.domain.data.remote.MessageThreadRemoteRepository
 import com.dpconde.feature.chat.directory.domain.entities.Message
 import com.dpconde.feature.chat.directory.domain.entities.MessageThread
 import com.dpconde.kaicare.core.commons.service.DataTransformer

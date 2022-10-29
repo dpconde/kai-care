@@ -1,4 +1,4 @@
-package com.dpconde.feature.chat.directory.domain.data
+package com.dpconde.feature.chat.directory.domain.data.remote
 
 import com.dpconde.feature.chat.directory.domain.entities.Message
 import com.dpconde.feature.chat.directory.domain.entities.MessageThread

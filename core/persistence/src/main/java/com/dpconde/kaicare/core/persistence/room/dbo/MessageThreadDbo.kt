@@ -11,6 +11,9 @@ data class MessageThreadDbo(
     val lastFetch: Date?,
     val unreadMessages: Int,
     val lastMessage: String?,
+    val lastMessageDate: Date?,
     val isGroup: Boolean,
-    val name: String
+    val name: String,
+    val userProfile: String?,
+    val imageUrl: String
 )

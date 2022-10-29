@@ -1,4 +1,4 @@
-package com.dpconde.feature.chat.directory.infrastructure.datatransformer
+package com.dpconde.feature.chat.directory.infrastructure.datatransformer.thread
 
 import com.dpconde.feature.chat.directory.domain.entities.MessageThread
 import com.dpconde.kaicare.core.commons.service.DataTransformer
@@ -18,8 +18,10 @@ class MessageFirestoreThreadTransformer: DataTransformer<DocumentSnapshot, Messa
             null,
             getMembers(from),
             null,
+            null,
             listOf(),
-            null)
+            null,
+        "", "", "")
     }
 
     @Suppress("UNCHECKED_CAST")
