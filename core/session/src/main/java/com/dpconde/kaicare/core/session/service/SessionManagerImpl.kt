@@ -8,13 +8,13 @@ class SessionManagerImpl @Inject constructor(
     private val context: Context
 ): SessionManager {
 
-    override fun getSessionToken() =
+    override fun getSessionUserId() =
         context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
-            .getString(SessionKey.TOKEN.value, null)
+            .getString(SessionKey.USER_ID.value, null)
 
-    override fun saveSessionToken(token: String) =
+    override fun saveSessionUserId(token: String) =
         context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
-            .edit().putString(SessionKey.TOKEN.value, token).apply()
+            .edit().putString(SessionKey.USER_ID.value, token).apply()
 
     override fun getSessionEmail() =
         context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)

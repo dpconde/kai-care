@@ -3,14 +3,14 @@ package com.dpconde.kaicare.core.session.service
 interface SessionManager {
 
     /**
-     * Get session token
+     * Get session user id
      */
-    fun getSessionToken(): String?
+    fun getSessionUserId(): String?
 
     /**
-     * Save token session
+     * Save session user id
      */
-    fun saveSessionToken(token: String)
+    fun saveSessionUserId(token: String)
 
     /**
      * Get email session

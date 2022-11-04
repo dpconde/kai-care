@@ -9,4 +9,5 @@
     <string name="chat_menu">Chat</string>
     <string name="calendar_menu">Calendar</string>
     <string name="tasks_menu">Tasks</string>
+    <string name="title_detail">Chat detail</string>
 </resources>

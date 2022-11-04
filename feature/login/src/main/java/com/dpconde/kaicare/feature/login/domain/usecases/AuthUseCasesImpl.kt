@@ -17,7 +17,7 @@ class AuthUseCasesImpl @Inject constructor(
 
     override fun getSessionEmail() = sessionManager.getSessionEmail()
 
-    override fun saveTokenSession(token: String) = sessionManager.saveSessionToken(token)
+    override fun saveUserId(userId: String) = sessionManager.saveSessionUserId(userId)
 
     override fun saveEmailSession(token: String) = sessionManager.saveSessionEmail(token)
 

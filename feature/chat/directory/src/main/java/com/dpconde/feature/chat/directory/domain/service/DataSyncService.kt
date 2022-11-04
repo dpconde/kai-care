@@ -1,10 +1,11 @@
 package com.dpconde.feature.chat.directory.domain.service
 
-import com.dpconde.feature.chat.directory.domain.data.local.MessageLocalRepository
-import com.dpconde.feature.chat.directory.domain.data.local.MessageThreadLocalRepository
-import com.dpconde.feature.chat.directory.domain.data.local.UserLocalRepository
-import com.dpconde.feature.chat.directory.domain.entities.MessageThread
-import com.dpconde.feature.chat.directory.domain.entities.User
+import com.dpconde.kaicare.core.commons.domain.ChatThread
+import com.dpconde.kaicare.core.commons.domain.User
+import com.dpconde.kaicare.core.localpersistence.repository.ChatMessageLocalRepository
+import com.dpconde.kaicare.core.localpersistence.repository.ChatThreadLocalRepository
+import com.dpconde.kaicare.core.localpersistence.repository.UserLocalRepository
+import com.dpconde.kaicare.core.session.service.SessionManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -12,34 +13,52 @@ import java.util.*
 import javax.inject.Inject
 
 class DataSyncService @Inject constructor(
-    private val localUserRepository: UserLocalRepository,
-    private val localMessageRepository: MessageLocalRepository,
-    private val localThreadRepository: MessageThreadLocalRepository,
-    //TODO Algo para obtener el id de usuario loggeado
+    private val userLocalRepository: UserLocalRepository,
+    private val chatMessageLocalRepository: ChatMessageLocalRepository,
+    private val chatThreadLocalRepository: ChatThreadLocalRepository,
+    private val sessionManager: SessionManager
 ){
 
-    suspend fun syncData(remote: List<MessageThread>, remoteUsers: List<User>){
+    suspend fun syncData(localData: List<ChatThread>, remote: List<ChatThread>, remoteUsers: List<User>){
         coroutineScope {
             awaitAll(
 
                 //Sync users
                 async {
-                    remoteUsers.apply { localUserRepository.save(this) }
+                    remoteUsers.apply { userLocalRepository.save(this) }
                 },
 
                 //Sync non existing threads
                 async { remote
-                    .map { updateLastFetch(it) }
-                    .map { updateUserThreadInfo(it, remoteUsers) }
-                    .apply { localThreadRepository.save(this) }
+                    .filterNot { remote -> localData.map { it.id }.contains(remote.id) }
+                    .onEach { remote -> updateLastFetch(
+                        remote,  localData.firstOrNull { local -> local.id == remote.id }) }
+                    .onEach { remote -> updateUserThreadInfo(remote, remoteUsers) }
+                    .onEach { it.lastMessage = "* Still no messages *" }
+                    .apply { chatThreadLocalRepository.save(this) }
                 },
 
                 //Update existing threads: Update last fetch date, unread messages
                 async { remote
-                    .map { updateUnreadMessages(it, it.unprocessedMessages?.size ?: 0) }
-                    .map { updateLastFetch(it) }
-                    .map { updateLastMessage(it) }
-                    .map { updateLastMessageDate(it) }
+                    .filter { remote -> localData.map { it.id }.contains(remote.id) }
+                    .onEach { remote ->
+                        updateUnreadMessages(
+                            remote,
+                            localData.firstOrNull { local -> local.id == remote.id })
+                    }
+                    .onEach { remote -> updateLastFetch(
+                        remote,
+                        localData.firstOrNull { local -> local.id == remote.id }) }
+                    .onEach { remote -> updateUserThreadInfo(remote, remoteUsers) }
+                    .onEach { remote -> getLastMessage(
+                        remote,
+                        localData.firstOrNull { local -> local.id == remote.id })
+                    }
+                    .onEach { remote ->
+                        updateLastMessageDate(
+                            remote,
+                            localData.firstOrNull { local -> local.id == remote.id })
+                    }
                     .apply { saveLocalMessageThreads(this) }
                     .forEach { saveUnprocessedMessages(it) }
                 }
@@ -47,48 +66,56 @@ class DataSyncService @Inject constructor(
         }
     }
 
-    private fun updateLastMessage(messageThread: MessageThread): MessageThread {
-        messageThread.lastMessage = when(messageThread.unprocessedMessages.isNullOrEmpty()){
-            true -> ""
-            false -> messageThread.unprocessedMessages!!.last().textMessage
-        }
-        return messageThread
+    private fun updateUnreadMessages(remoteThread: ChatThread, localThread: ChatThread?) {
+        remoteThread.unreadMessages =
+                ((remoteThread.unprocessedMessages?.size ?: 0) + (localThread?.unreadMessages ?: 0))
     }
 
-    private fun updateLastMessageDate(messageThread: MessageThread): MessageThread {
-        messageThread.lastMessageDate = when(messageThread.unprocessedMessages.isNullOrEmpty()){
-            true -> null
-            false -> messageThread.unprocessedMessages!!.last().sent
+    private suspend fun updateLastFetch(remoteThread: ChatThread, localThread: ChatThread?){
+        remoteThread.lastFetch = when(remoteThread.unprocessedMessages.isNullOrEmpty()){
+            false -> remoteThread.unprocessedMessages!!.first().sentDate
+            true -> localThread?.let {
+                chatMessageLocalRepository.fetchByThreadId(localThread.id).lastOrNull()?.sentDate ?: Date()
+            }?: Date()
         }
-        return messageThread
     }
 
-    private suspend fun saveUnprocessedMessages(thread: MessageThread){
+    private suspend fun updateLastMessageDate(remoteThread: ChatThread, localThread: ChatThread?){
+        remoteThread.lastMessageDate = when(remoteThread.unprocessedMessages.isNullOrEmpty()){
+            false -> remoteThread.unprocessedMessages!!.first().sentDate
+            true -> localThread?.let {
+                chatMessageLocalRepository.fetchByThreadId(localThread.id).lastOrNull()?.sentDate
+            }
+        }
+    }
+
+    private suspend fun saveUnprocessedMessages(thread: ChatThread){
         thread.unprocessedMessages?.let {
-            localMessageRepository.save(it)
+            chatMessageLocalRepository.saveAll(it)
         }
     }
 
-    private suspend fun saveLocalMessageThreads(threads: List<MessageThread>): List<MessageThread> {
-        localThreadRepository.save(threads)
+    private suspend fun getLastMessage(remoteThread: ChatThread, localThread: ChatThread?){
+        remoteThread.lastMessage = when(remoteThread.unprocessedMessages.isNullOrEmpty()) {
+            true -> when (localThread != null) {
+                true -> chatMessageLocalRepository.fetchByThreadId(localThread.id)
+                        .lastOrNull()?.text?:"* Still no messages *"
+                false -> "* Still no messages *"
+            }
+            false -> remoteThread.unprocessedMessages!!.first().text
+        }
+    }
+
+    private suspend fun saveLocalMessageThreads(threads: List<ChatThread>): List<ChatThread> {
+        chatThreadLocalRepository.save(threads)
         return threads
     }
 
-    private fun updateUnreadMessages(messageThread: MessageThread, number: Int) : MessageThread {
-        messageThread.unreadMessages = number
-        return messageThread
-    }
-
-    private fun updateLastFetch(messageThread: MessageThread) : MessageThread {
-        messageThread.lastFetch = Date()
-        return messageThread
-    }
-
-    private fun updateUserThreadInfo(messageThread: MessageThread, remoteUsers: List<User>) : MessageThread {
-        return messageThread.apply {
+    private fun updateUserThreadInfo(messageThread: ChatThread, remoteUsers: List<User>) {
+        messageThread.apply {
             val threadOppositeUser = remoteUsers.first {
                 it.id == messageThread.members
-                    .filterNot { threadUserId -> threadUserId == "5g6xDmo3QQTxRswoQli6" } //TODO
+                    .filterNot { threadUserId -> threadUserId == sessionManager.getSessionUserId() }
                     .first().toString()
             }
 

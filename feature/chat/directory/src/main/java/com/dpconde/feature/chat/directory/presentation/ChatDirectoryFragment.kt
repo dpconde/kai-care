@@ -38,7 +38,7 @@ class ChatDirectoryFragment : Fragment() {
         }
 
         setUpRecyclerView()
-        chatDirectoryViewModel.messageThreads.observe(viewLifecycleOwner){
+        chatDirectoryViewModel.chatThreads.observe(viewLifecycleOwner){
             it?.let {
                 listAdapter.submitList(it)
             }
@@ -52,6 +52,7 @@ class ChatDirectoryFragment : Fragment() {
 
     private fun setUpRecyclerView(){
         val layoutManager = LinearLayoutManager(requireContext())
+        binding.threadList.itemAnimator = null
         binding.threadList.layoutManager = layoutManager
         binding.threadList.adapter = listAdapter
     }

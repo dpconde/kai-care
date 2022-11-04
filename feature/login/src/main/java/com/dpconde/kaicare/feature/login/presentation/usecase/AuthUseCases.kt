@@ -21,9 +21,9 @@ interface AuthUseCases {
     fun getSessionEmail(): String?
 
     /**
-     * Save token session
+     * Save user id
      */
-    fun saveTokenSession(token: String)
+    fun saveUserId(userId: String)
 
     /**
      * Save email session

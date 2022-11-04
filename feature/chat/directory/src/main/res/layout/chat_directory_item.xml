@@ -11,7 +11,7 @@
 
         <variable
             name="thread"
-            type="com.dpconde.feature.chat.directory.domain.entities.MessageThread" />
+            type="com.dpconde.kaicare.core.commons.domain.ChatThread" />
     </data>
 
     <LinearLayout

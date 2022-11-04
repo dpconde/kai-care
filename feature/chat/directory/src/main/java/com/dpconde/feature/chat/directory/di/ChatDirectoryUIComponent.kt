@@ -3,7 +3,9 @@ package com.dpconde.feature.chat.directory.di
 import android.content.Context
 import com.dpconde.feature.chat.directory.presentation.ChatDirectoryFragment
 import com.dpconde.kaicare.AppDependencies
-import com.dpconde.kaicare.core.persistence.di.PersistenceModule
+import com.dpconde.kaicare.core.localpersistence.di.LocalPersistenceModule
+import com.dpconde.kaicare.core.remotepersistence.di.RemotePersistenceModule
+import com.dpconde.kaicare.core.session.di.SessionModule
 import dagger.BindsInstance
 import dagger.Component
 
@@ -12,7 +14,9 @@ import dagger.Component
     modules = [
         ChatDirectoryModule::class,
         ChatDirectoryUIModule::class,
-        PersistenceModule::class
+        SessionModule::class,
+        LocalPersistenceModule::class,
+        RemotePersistenceModule::class
     ]
 )
 interface ChatDirectoryUIComponent {

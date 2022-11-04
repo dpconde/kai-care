@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -32,7 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dynamicFeatures = [':feature:login', ':feature:chat:directory', ':feature:home', ':feature:calendar', ':feature:tasks']
+    dynamicFeatures = [':feature:login', ':feature:chat:directory', ':feature:home', ':feature:calendar', ':feature:tasks', ':feature:chat:detail']
 
     dataBinding {
         enabled = true
@@ -42,7 +43,8 @@ android {
 dependencies {
     api project(":core:commons")
     api project(":core:session")
-    api project(":core:persistence")
+    api project(':core:localpersistence')
+    api project(':core:remotepersistance')
 
     //Hilt
     implementation 'com.google.dagger:hilt-android:2.38.1'

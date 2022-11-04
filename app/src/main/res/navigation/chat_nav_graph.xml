@@ -7,6 +7,29 @@
         <fragment
             android:id="@+id/chatDirectoryFragment"
             android:name="com.dpconde.feature.chat.directory.presentation.ChatDirectoryFragment">
+
+            <action
+                android:id="@+id/chatDirectoryFragment_to_chatDetailFragment"
+                app:destination="@+id/chatDetailFragment"/>
+
         </fragment>
+
+    <fragment
+        android:id="@+id/chatDetailFragment"
+        android:name="com.dpconde.kaicare.feature.chat.detail.presentation.ChatDetailFragment">
+
+        <argument
+            android:name="threadId"
+            app:argType="string" />
+
+        <argument
+            android:name="threadName"
+            app:argType="string" />
+
+        <argument
+            android:name="threadImg"
+            app:argType="string" />
+
+    </fragment>
 
     </navigation>

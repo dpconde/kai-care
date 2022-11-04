@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dpconde.kaicare">
 
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        tools:ignore="LockedOrientationActivity"
         android:name=".App">
 
         <activity
             android:name=".presentation.AuthActivity"
             android:exported="true"
-            android:theme="@style/Theme.KaiCare.Auth">
+            android:theme="@style/Theme.KaiCare.Auth"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -20,7 +23,8 @@
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.KaiCare.Main">
+            android:theme="@style/Theme.KaiCare.Main"
+            android:screenOrientation="portrait">
         </activity>
 
     </application>

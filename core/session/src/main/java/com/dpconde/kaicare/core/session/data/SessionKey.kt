@@ -1,6 +1,6 @@
 package com.dpconde.kaicare.core.session.data
 
 enum class SessionKey(val value: String) {
-    TOKEN("SESSION_TOKEN"),
+    USER_ID("SESSION_USER_ID"),
     EMAIL("SESSION_EMAIL");
 }

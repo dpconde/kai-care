@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onSuccessAuthWithEmailAndPassword(result: AuthResult.Success){
-        authUseCases.saveTokenSession(result.user.id) //TODO
+        authUseCases.saveUserId(result.user.id)
         authUseCases.saveEmailSession(loginEmail.value!!)
         accessGranted.postValue(result)
     }

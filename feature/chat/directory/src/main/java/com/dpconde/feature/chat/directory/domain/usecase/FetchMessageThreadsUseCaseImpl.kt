@@ -1,11 +1,13 @@
 package com.dpconde.feature.chat.directory.domain.usecase
 
-import com.dpconde.feature.chat.directory.domain.data.local.MessageThreadLocalRepository
-import com.dpconde.feature.chat.directory.domain.data.remote.MessageThreadRemoteRepository
-import com.dpconde.feature.chat.directory.domain.data.remote.UserRemoteRepository
-import com.dpconde.feature.chat.directory.domain.entities.MessageThread
 import com.dpconde.feature.chat.directory.domain.service.DataSyncService
 import com.dpconde.feature.chat.directory.presentation.usecase.FetchMessageThreadsUseCase
+import com.dpconde.kaicare.core.commons.domain.ChatThread
+import com.dpconde.kaicare.core.localpersistence.repository.ChatThreadLocalRepository
+import com.dpconde.kaicare.core.remotepersistence.repository.ChatMessageRemoteRepository
+import com.dpconde.kaicare.core.remotepersistence.repository.ChatThreadRemoteRepository
+import com.dpconde.kaicare.core.remotepersistence.repository.UserRemoteRepository
+import com.dpconde.kaicare.core.session.service.SessionManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -14,27 +16,33 @@ import java.util.*
 import javax.inject.Inject
 
 class FetchMessageThreadsUseCaseImpl @Inject constructor(
-    private val remoteThreadRepository: MessageThreadRemoteRepository,
-    private val remoteUserRepository: UserRemoteRepository,
-    private val localThreadRepository: MessageThreadLocalRepository,
+    private val chatMessageRemoteRepository: ChatMessageRemoteRepository,
+    private val userRemoteRepository: UserRemoteRepository,
+    private val chatThreadRemoteRepository: ChatThreadRemoteRepository,
+    private val chatThreadLocalRepository: ChatThreadLocalRepository,
     private val dataSyncService: DataSyncService,
+    private val sessionManager: SessionManager
 ): FetchMessageThreadsUseCase {
 
-    override suspend fun fetchMessageThreads(): List<MessageThread>{
+    override suspend fun fetchMessageThreads(): List<ChatThread>{
         return coroutineScope {
             val remoteUsers = async { fetchRemoteUsers() }
-            val remoteData = async{ fetchRemoteMessageThreads() }
-            dataSyncService.syncData(remoteData.await(), remoteUsers.await())
+            val remoteData = async{ fetchRemoteMessageThreadsAndMessages() }
+            val localData = async{ chatThreadLocalRepository.fetchAll()}
+            dataSyncService.syncData(localData.await(), remoteData.await(), remoteUsers.await())
             fetchCurrentMessageThreads()
         }
     }
 
-    private suspend fun fetchRemoteMessageThreads(): List<MessageThread> {
-        val remoteData = remoteThreadRepository.getMessageThreadsByUser("5g6xDmo3QQTxRswoQli6") //TODO
+    private suspend fun fetchRemoteMessageThreadsAndMessages(): List<ChatThread> {
+        val localData = chatThreadLocalRepository.fetchAll()
+        val remoteData = chatThreadRemoteRepository.getByUser(sessionManager.getSessionUserId()!!)
         coroutineScope {
             remoteData.map { messageThread ->
                 async(Dispatchers.IO){
-                    val messages = remoteThreadRepository.getMessagesByThreadIdAndDate(messageThread.id, Date())
+                    val messages = chatMessageRemoteRepository.getByThreadIdAndDate(
+                        messageThread.id,
+                        localData.firstOrNull() { messageThread.id == it.id }?.lastFetch ?: Date())
                     messageThread.unprocessedMessages = messages
                 }
             }.awaitAll()
@@ -43,8 +51,8 @@ class FetchMessageThreadsUseCaseImpl @Inject constructor(
         return remoteData
     }
 
-    override suspend fun fetchCurrentMessageThreads() = localThreadRepository.fetchAll()
+    override suspend fun fetchCurrentMessageThreads() = chatThreadLocalRepository.fetchAll()
 
-    private suspend fun fetchRemoteUsers() = remoteUserRepository.getAllUsers()
+    private suspend fun fetchRemoteUsers() = userRemoteRepository.getAllUsers()
 
 }
